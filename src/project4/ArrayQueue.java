@@ -1,7 +1,7 @@
 package project4;
 
 /**
-  * What does it do?
+  * This class implements the queue interface with the use of an array.
   *
   * @author James Osborne
   * @version 1.0 
@@ -9,22 +9,29 @@ package project4;
   * Created:  10/7/2016
   * ©Copyright James Osborne. All rights reserved.
   * Summary of Modifications:
-  *     XX month XXXX – JAO – 
+  *     07 Oct 2016 – JAO – Added body to constructors, enqueue, dequeue, front,
+  *     isEmpty, and size.
+  *     08 Oct 2016 - JAO - Added jUnit testing and expansion of array.
+  *     10 Oct 2016 - JAO - Changed declaration of elements array from
+  *     private E[] elements to private Object[] elements to fix some
+  *     typing issues present within the constructor.
   * 
-  * Description: 
-  * @param <E> 
+  * Description: This class provides the implementations for a queue
+  * defined by Queue.java within this package. This queue is also usable with
+  * any data type, for it implements generic typing, and is expandable.
+  * 
+  * @param <E> The chosen type for the queue will go inside the angle brackets.
   */
 public class ArrayQueue<E> implements Queue<E> {
-
-    private E[] elements;
+    private Object[] elements;
     private int capacity;
     private int numOfElements;
     
-    public ArrayQueue() {
+    public <E>ArrayQueue() {
         this(100);
     }
     
-    public ArrayQueue(int cap) {
+    public <E>ArrayQueue(int cap) {
         capacity = cap;
         elements = (E[])new Object[capacity];
         numOfElements = 0;
@@ -40,7 +47,7 @@ public class ArrayQueue<E> implements Queue<E> {
             tempArray  = (E[])new Object[numOfElements];
             
             for (int i = 0; i < numOfElements; ++i) {
-                tempArray[i] = elements[i];
+                tempArray[i] = (E)elements[i];
             }
             
             capacity += 10;
@@ -60,7 +67,7 @@ public class ArrayQueue<E> implements Queue<E> {
             throw new QueueEmptyException("Queue is empty");
         }
         else {
-            E result = elements[0];
+            E result = (E)elements[0];
             
             for (int i = 0; i < numOfElements - 1; ++i) {
                 elements[i] = elements[i + 1];
@@ -78,7 +85,7 @@ public class ArrayQueue<E> implements Queue<E> {
             throw new QueueEmptyException("Queue is empty");
         }
         else {
-            return elements[0];
+            return (E)elements[0];
         }
     }
     

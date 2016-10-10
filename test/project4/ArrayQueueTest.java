@@ -9,8 +9,9 @@ public class ArrayQueueTest {
     
     public ArrayQueueTest() {
     }
-
+    
     @Rule public ExpectedException expected = ExpectedException.none();
+    
     /**
      * Test of enqueue method, of class ArrayQueue.
      */
@@ -24,8 +25,6 @@ public class ArrayQueueTest {
         
         assertEquals(expSize, testQueue.size());
         assertEquals(expFront, (int)testQueue.front());
-        
-        
         
         testQueue.dequeue();
         
@@ -138,5 +137,48 @@ public class ArrayQueueTest {
         expResult = false;
         
         assertEquals(expResult, testQueue.isEmpty());
+    }
+    
+    /**
+     * Test queues of different types and even an Object queue.
+     */
+    @Test
+    public void testDifferentTypes() throws InvalidDataException,
+                                            QueueEmptyException {
+        ArrayQueue<Integer> intQueue = new ArrayQueue<Integer>();
+        int expIntFront = 1;
+        
+        intQueue.enqueue(1);
+        
+        assertEquals(expIntFront, (int)intQueue.front());
+        
+        ArrayQueue<Double> doubleQueue = new ArrayQueue<Double>();
+        double expDoubleFront = 1.5;
+        
+        doubleQueue.enqueue(1.5);
+        
+        assertEquals(expDoubleFront, (double)doubleQueue.front(), 0.0000001);
+        
+        ArrayQueue<String> stringQueue = new ArrayQueue<String>();
+        String expStringFront = "hi mom";
+        
+        stringQueue.enqueue("hi mom");
+        
+        assertEquals(expStringFront, (String)stringQueue.front());
+        
+        ArrayQueue<Object> objectQueue = new ArrayQueue<Object>();
+        int expObjIntFront = 1;
+        double expObjDoubleFront = 1.5;
+        String expObjStringFront = "hi mom";
+        
+        objectQueue.enqueue(1);
+        objectQueue.enqueue(1.5);
+        objectQueue.enqueue("hi mom");
+        
+        assertEquals(expObjIntFront, (int)objectQueue.front()); 
+        objectQueue.dequeue();
+        assertEquals(expObjDoubleFront, (double)objectQueue.front(), 0.0000001);
+        objectQueue.dequeue();
+        assertEquals(expObjStringFront, (String)objectQueue.front());
     }
 }

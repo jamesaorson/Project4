@@ -1,17 +1,18 @@
 package project4;
 
 /**
-  * What does it do?
+  * This class implements the InvalidDataException for the ArrayQueue.
   *
   * @author James Osborne
   * @version 1.0 
-  * File: <filename>
-  * Created:  <current date>
+  * File: InvalidQueueException.java
+  * Created:  07 Oct 2016
   * ©Copyright James Osborne. All rights reserved.
   * Summary of Modifications:
-  *     XX month XXXX – JAO – 
+  *     07 Oct 2016 – JAO – Created constructor with error message parameter.
   * 
-  * Description: 
+  * Description: This class provides an exception for the situation where
+  * the user tries to put a null element into the ArrayQueue with enqueue().
   */
 class InvalidDataException extends Exception {
     InvalidDataException(String err) {
