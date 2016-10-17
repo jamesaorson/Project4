@@ -5,8 +5,8 @@ package project4;
   *
   * @author James Osborne
   * @version 1.0 
-  * File: <filename>
-  * Created:  <current date>
+  * File: Queue.java
+  * Created:  07 Oct 2016
   * ©Copyright James Osborne. All rights reserved.
   * Summary of Modifications:
   *     07 Oct 2016 – JAO – Created methods of the interface.

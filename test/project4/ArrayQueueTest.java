@@ -36,6 +36,22 @@ public class ArrayQueueTest {
             assertEquals(i, (int)testQueue.dequeue());
         }
         
+        for (int i = 0; i < 1000; ++i) {
+            testQueue.enqueue(i);
+        }
+        
+        for (int i = 0; i < 100; ++i) {
+            assertEquals(i, (int)testQueue.dequeue());
+        }
+        
+        for (int i = 1000; i < 1100; ++i) {
+            testQueue.enqueue(i);
+        }
+        
+        for (int i = 100; i < 1100; ++i) {
+            assertEquals(i, (int)testQueue.dequeue());
+        }
+        
         expected.expect(InvalidDataException.class);
         expected.expectMessage("Null input is not valid");
         
