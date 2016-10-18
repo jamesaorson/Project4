@@ -19,6 +19,8 @@ package project4;
   *     demonstrated within the slides for the course. Removed (E[]) casting
   *     on elements array: simply making it an Object array now.
   *     17 Oct 2016 - JAO - Converted it to a circular array.
+  *     18 Oct 2016 - JAO - Removed rearIndex variable and only use a frontIndex
+  *     and size variable. Used mod operations rather than complex if-elses.
   * 
   * Description: This class provides the implementations for a queue
   * defined by Queue.java within this package. This queue is also usable with
@@ -28,10 +30,10 @@ package project4;
   */
 public class ArrayQueue<E> implements Queue<E> {
     private Object[] elements;
-    private int capacity;
+    //private int capacity;
     private int numOfElements;
     private int frontIndex;
-    private int rearIndex;
+    //private int rearIndex;
     
     public <E>ArrayQueue() {
         this(100);
@@ -43,11 +45,11 @@ public class ArrayQueue<E> implements Queue<E> {
       * @param cap The declared starting size of the queue.
       */
     public <E>ArrayQueue(int cap) {
-        capacity = cap;
-        elements = new Object[capacity];
+        //capacity = cap;
+        elements = new Object[cap];
         numOfElements = 0;
         frontIndex = 0;
-        rearIndex = 0;
+        //rearIndex = 0;
     }
     
     /**
@@ -61,34 +63,36 @@ public class ArrayQueue<E> implements Queue<E> {
             throw new InvalidDataException("Null input is not valid");
         }
         
-        if (numOfElements == capacity) {
-            Object[] newArray = new Object[capacity * 2];
+        if (numOfElements == elements.length) {
+            Object[] newArray = new Object[elements.length * 2];
             
             for (int i = 0; i < numOfElements; ++i) {
-                if (i + frontIndex == capacity) {
-                    newArray[i] = elements[i - (capacity - frontIndex)];
+                newArray[i] = elements[(frontIndex + i) % elements.length];
+                /*if (i + frontIndex == elements.length) {
+                    newArray[i] = elements[i - (elements.length - frontIndex)];
                 }
                 else {
                     newArray[i] = elements[i + frontIndex];
-                }
+                }*/
             }
             
             frontIndex = 0;
-            rearIndex = numOfElements;
+            //rearIndex = numOfElements;
             
             /*for (int i = 0; i < capacity; ++i) {
                 newArray[i] = elements[i];
             }*/
             
             elements = newArray;
-            capacity *= 2;
-        }
+            //capacity *= 2;
+        }/*
         else if (rearIndex == capacity) {
             rearIndex = 0;
-        }
+        }*/
         
-        elements[rearIndex] = element;
-        ++rearIndex;
+        elements[(frontIndex + numOfElements) % elements.length] = element;
+        //rearIndex = (rearIndex + 1) % elements.length;
+        //++rearIndex;
         ++numOfElements;
     }
     
@@ -116,13 +120,10 @@ public class ArrayQueue<E> implements Queue<E> {
             
             if (numOfElements == 0) {
                 frontIndex = 0;
-                rearIndex = 0;
-            }
-            else if (frontIndex + 1 == capacity) {
-                frontIndex = 0;
+                //rearIndex = 0;
             }
             else {
-                ++frontIndex;
+                frontIndex = (frontIndex + 1) % elements.length;
             }
             
             return result;
