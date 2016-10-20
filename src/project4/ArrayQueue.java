@@ -30,11 +30,10 @@ package project4;
   */
 public class ArrayQueue<E> implements Queue<E> {
     private Object[] elements;
-    //private int capacity;
-    private int numOfElements;
+    private int size;
     private int frontIndex;
-    //private int rearIndex;
     
+    //Default starting size of queue is set to 100.
     public <E>ArrayQueue() {
         this(100);
     }
@@ -45,11 +44,9 @@ public class ArrayQueue<E> implements Queue<E> {
       * @param cap The declared starting size of the queue.
       */
     public <E>ArrayQueue(int cap) {
-        //capacity = cap;
         elements = new Object[cap];
-        numOfElements = 0;
+        size = 0;
         frontIndex = 0;
-        //rearIndex = 0;
     }
     
     /**
@@ -63,37 +60,26 @@ public class ArrayQueue<E> implements Queue<E> {
             throw new InvalidDataException("Null input is not valid");
         }
         
-        if (numOfElements == elements.length) {
+        //Checks if array is full and needs expanded.
+        if (size == elements.length) {
+            //Double the current capacity for expansion.
             Object[] newArray = new Object[elements.length * 2];
             
-            for (int i = 0; i < numOfElements; ++i) {
+            //Copies elements to a new array, with front index being 0 again.
+            for (int i = 0; i < size; ++i) {
                 newArray[i] = elements[(frontIndex + i) % elements.length];
-                /*if (i + frontIndex == elements.length) {
-                    newArray[i] = elements[i - (elements.length - frontIndex)];
-                }
-                else {
-                    newArray[i] = elements[i + frontIndex];
-                }*/
             }
             
+            //Set front index to front of array.
             frontIndex = 0;
-            //rearIndex = numOfElements;
-            
-            /*for (int i = 0; i < capacity; ++i) {
-                newArray[i] = elements[i];
-            }*/
-            
+
+            //Copy new array into old.
             elements = newArray;
-            //capacity *= 2;
-        }/*
-        else if (rearIndex == capacity) {
-            rearIndex = 0;
-        }*/
+        }
         
-        elements[(frontIndex + numOfElements) % elements.length] = element;
-        //rearIndex = (rearIndex + 1) % elements.length;
-        //++rearIndex;
-        ++numOfElements;
+        //Inserts the element and increments the tracked number of elements.
+        elements[(frontIndex + size) % elements.length] = element;
+        ++size;
     }
     
     /**
@@ -103,28 +89,20 @@ public class ArrayQueue<E> implements Queue<E> {
       * @throws QueueEmptyException If queue is empty before element is removed.
       */
     public E dequeue () throws QueueEmptyException {
-        if (numOfElements == 0) {
+        if (size == 0) {
             throw new QueueEmptyException("Queue is empty");
         }
         else {
+            //Get resulting element from queue, null its array location, and
+            //decrement the size.
             E result = (E)elements[frontIndex];
-            /*E result = (E)elements[0];
             
-            for (int i = 0; i < numOfElements - 1; ++i) {
-                elements[i] = elements[i + 1];
-            }
-            
-            elements[--numOfElements] = null;*/
             elements[frontIndex] = null;
-            --numOfElements;
+            --size;
             
-            if (numOfElements == 0) {
-                frontIndex = 0;
-                //rearIndex = 0;
-            }
-            else {
-                frontIndex = (frontIndex + 1) % elements.length;
-            }
+            //Set front index to next spot now. This works also for when the
+            //queue is empty after the dequeue, keeping its circular nature.
+            frontIndex = (frontIndex + 1) % elements.length;
             
             return result;
         }
@@ -137,7 +115,7 @@ public class ArrayQueue<E> implements Queue<E> {
       * @throws QueueEmptyException If queue is empty.
       */
     public E front() throws QueueEmptyException {
-        if (numOfElements == 0) {
+        if (size == 0) {
             throw new QueueEmptyException("Queue is empty");
         }
         else {
@@ -151,7 +129,7 @@ public class ArrayQueue<E> implements Queue<E> {
       * @return Number of elements in the queue.
       */
     public int size() {
-        return numOfElements;
+        return size;
     }
     
     /**
@@ -161,6 +139,6 @@ public class ArrayQueue<E> implements Queue<E> {
       * @return True if the queue is empty, and false otherwise.
       */
     public boolean isEmpty() {
-        return numOfElements == 0;
+        return size == 0;
     }
 }
